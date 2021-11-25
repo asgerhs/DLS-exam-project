@@ -1,0 +1,25 @@
+syntax = "proto3";
+
+option csharp_namespace = "DLS.Factory.Protos";
+
+package course;
+
+import "google/protobuf/wrappers.proto";
+import "google/protobuf/empty.proto";
+
+service CourseProto {
+    rpc GetAllCourses (google.protobuf.Empty) returns (AllCoursesReply);
+    rpc GetCourseById (google.protobuf.Int64Value) returns (CourseObj);
+    rpc AddCourse (CourseObj) returns (CourseObj);
+}
+
+message AllCoursesReply {
+    repeated CourseObj courses = 1;
+}
+
+message CourseObj {
+  int64 id = 1;
+  string name = 2;
+  int64 teacherId = 3;
+  repeated int64 studentIds = 4;
+}

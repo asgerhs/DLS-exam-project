@@ -1,0 +1,28 @@
+syntax = "proto3";
+
+option csharp_namespace = "DLS.ServiceStudent.Protos";
+
+package student;
+
+import "google/protobuf/wrappers.proto";
+import "google/protobuf/empty.proto";
+
+service StudentProto {
+    rpc GetAllStudents (google.protobuf.Empty) returns (AllStudentsReply);
+    rpc GetStudentById (google.protobuf.Int64Value) returns (StudentObj);
+    rpc AddStudent (StudentObj) returns (StudentObj);
+}
+
+message AllStudentsReply {
+    repeated StudentObj students = 1;
+}
+
+message StudentObj {
+  int64 id = 1;
+  string name = 2;
+  string email = 3;
+  int32 age = 4;
+  string gender = 5;
+  repeated int64 coursesIds = 6;
+  repeated int64 lectureIds = 7;
+}
