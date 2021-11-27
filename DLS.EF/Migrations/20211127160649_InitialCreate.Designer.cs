@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DLS.EF.Migrations
 {
     [DbContext(typeof(SchoolContext))]
-    [Migration("20211125140905_InitCreate")]
-    partial class InitCreate
+    [Migration("20211127160649_InitialCreate")]
+    partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -23,6 +23,21 @@ namespace DLS.EF.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
+
+            modelBuilder.Entity("CourseStudent", b =>
+                {
+                    b.Property<long>("CoursesId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("StudentsId")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("CoursesId", "StudentsId");
+
+                    b.HasIndex("StudentsId");
+
+                    b.ToTable("CourseStudent");
+                });
 
             modelBuilder.Entity("DLS.Models.Models.Course", b =>
                 {
@@ -35,15 +50,10 @@ namespace DLS.EF.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<long?>("StudentId")
-                        .HasColumnType("bigint");
-
                     b.Property<long?>("TeacherId")
                         .HasColumnType("bigint");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("StudentId");
 
                     b.HasIndex("TeacherId");
 
@@ -128,12 +138,23 @@ namespace DLS.EF.Migrations
                     b.ToTable("Teachers");
                 });
 
+            modelBuilder.Entity("CourseStudent", b =>
+                {
+                    b.HasOne("DLS.Models.Models.Course", null)
+                        .WithMany()
+                        .HasForeignKey("CoursesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("DLS.Models.Models.Student", null)
+                        .WithMany()
+                        .HasForeignKey("StudentsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("DLS.Models.Models.Course", b =>
                 {
-                    b.HasOne("DLS.Models.Models.Student", null)
-                        .WithMany("Courses")
-                        .HasForeignKey("StudentId");
-
                     b.HasOne("DLS.Models.Models.Teacher", "Teacher")
                         .WithMany("Courses")
                         .HasForeignKey("TeacherId");
@@ -162,8 +183,6 @@ namespace DLS.EF.Migrations
 
             modelBuilder.Entity("DLS.Models.Models.Student", b =>
                 {
-                    b.Navigation("Courses");
-
                     b.Navigation("Lectures");
                 });
 

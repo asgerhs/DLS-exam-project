@@ -41,6 +41,17 @@ namespace DLS.ServiceCourse
             using (var dbContext = new SchoolContext())
             {
                 Course s = ProtoMapper<CourseObj, Course>.Map(course);
+                List<Student> students = new List<Student>();
+                foreach (long id in course.StudentIds)
+                {
+                    Student? student = dbContext.Students.Where(x => x.Id == id).SingleOrDefault();
+                    Console.WriteLine(student);
+                    if(student != null)
+                    students.Add(student);
+                }
+                Console.WriteLine(students);
+                s.Teacher = dbContext.Teachers.Where(x => x.Id == course.TeacherId).SingleOrDefault();
+                s.Students = students; 
                 dbContext.Courses.Add(s);
                 dbContext.SaveChanges();
                 return Task.FromResult(ProtoMapper<Course, CourseObj>.Map(s));

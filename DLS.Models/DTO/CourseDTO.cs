@@ -6,7 +6,7 @@ namespace DLS.Models.DTO
         public string Name { get; set; }
         #nullable enable
         public TeacherDTO? Teacher { get; set; }
-        List<StudentDTO>? Students { get; set; }
+        public List<StudentDTO>? Students { get; set; }
         #nullable disable
     }
 }
