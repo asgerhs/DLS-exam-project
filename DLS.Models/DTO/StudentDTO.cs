@@ -9,6 +9,8 @@ namespace DLS.Models.DTO
         #nullable enable
         public List<CourseDTO>? Courses { get; set; }
         public List<LectureDTO>? Lectures { get; set; }
+        public List<long>? CourseIds { get; set; }
+        public List<long>? LectureIds { get; set; }
         #nullable disable
     }
 }

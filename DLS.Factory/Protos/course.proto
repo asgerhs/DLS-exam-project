@@ -8,18 +8,23 @@ import "google/protobuf/wrappers.proto";
 import "google/protobuf/empty.proto";
 
 service CourseProto {
-    rpc GetAllCourses (google.protobuf.Empty) returns (AllCoursesReply);
-    rpc GetCourseById (google.protobuf.Int64Value) returns (CourseObj);
-    rpc AddCourse (CourseObj) returns (CourseObj);
+  rpc GetAllCourses (google.protobuf.Empty) returns (AllCoursesReply);
+  rpc GetCourseById (google.protobuf.Int64Value) returns (CourseObj);
+  rpc AddCourse (CourseObj) returns (CourseObj);
+  // rpc AddStudentsToCourse(StudentIds) returns (google.protobuf.Empty);
 }
 
 message AllCoursesReply {
-    repeated CourseObj courses = 1;
+  repeated CourseObj courses = 1;
 }
 
 message CourseObj {
-  int64 id = 1;
-  string name = 2;
-  int64 teacherId = 3;
-  repeated int64 studentIds = 4;
+int64 id = 1;
+string name = 2;
+int64 teacherId = 3;
+repeated int64 studentIds = 4;
 }
+
+// message StudentIds{
+// int64 studentIds = 1;
+// }

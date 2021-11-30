@@ -17,9 +17,9 @@ namespace DLS.EF
             new Teacher() { Name = "Todorka", Email="tdi@mail.com"}
         };
 
-        static List<Course> courses = new List<Course>(){
-            new Course() { Name = "DLS"}
-        };
+        // static List<Course> courses = new List<Course>(){
+        //     new Course() { Name = "DLS"}
+        // };
 
         public static void Main(string[] args)
         {
@@ -30,8 +30,8 @@ namespace DLS.EF
                     context.Students.Add(s);
                 foreach (Teacher t in teachers)
                     context.Teachers.Add(t);
-                foreach (Course c in courses)
-                    context.Courses.Add(c);
+                // foreach (Course c in courses)
+                //     context.Courses.Add(c);
                 context.SaveChanges();
             }
         }
