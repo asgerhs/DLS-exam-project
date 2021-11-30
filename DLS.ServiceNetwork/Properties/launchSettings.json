@@ -1,0 +1,13 @@
+﻿{
+  "profiles": {
+    "DLS.ServiceNetwork": {
+      "commandName": "Project",
+      "dotnetRunMessages": true,
+      "launchBrowser": false,
+      "applicationUrl": "http://localhost:5053;https://localhost:7139",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      }
+    }
+  }
+}

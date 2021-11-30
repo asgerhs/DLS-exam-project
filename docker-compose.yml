@@ -33,6 +33,7 @@ services:
       - lan
     ports:
       - 8000:80
+    
 
   servicestudent:
     build: ./
@@ -61,6 +62,14 @@ services:
   servicelecture:
     build: ./
     command: "./wait-for-it.sh mssql:1433 -- dotnet run --no-launch-profile --project DLS.ServiceLecture"
+    environment:
+      ASPNETCORE_URLS: "http://*:80"
+    networks:
+      - lan
+  
+  servicenetwork:
+    build: ./
+    command: "./wait-for-it.sh mssql:1433 -- dotnet run --no-launch-profile --project DLS.ServiceNetwork"
     environment:
       ASPNETCORE_URLS: "http://*:80"
     networks:

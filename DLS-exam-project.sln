@@ -19,6 +19,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DLS.ServiceCourse", "DLS.Se
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DLS.ServiceLecture", "DLS.ServiceLecture\DLS.ServiceLecture.csproj", "{68D6287C-B234-4B1A-B4FF-2B5EB8150B10}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DLS.ServiceNetwork", "DLS.ServiceNetwork\DLS.ServiceNetwork.csproj", "{0823D26F-CBB1-406D-AA48-79836858FFBE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -64,5 +66,17 @@ Global
 		{68D6287C-B234-4B1A-B4FF-2B5EB8150B10}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{68D6287C-B234-4B1A-B4FF-2B5EB8150B10}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{68D6287C-B234-4B1A-B4FF-2B5EB8150B10}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0823D26F-CBB1-406D-AA48-79836858FFBE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0823D26F-CBB1-406D-AA48-79836858FFBE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0823D26F-CBB1-406D-AA48-79836858FFBE}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{0823D26F-CBB1-406D-AA48-79836858FFBE}.Debug|x64.Build.0 = Debug|Any CPU
+		{0823D26F-CBB1-406D-AA48-79836858FFBE}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{0823D26F-CBB1-406D-AA48-79836858FFBE}.Debug|x86.Build.0 = Debug|Any CPU
+		{0823D26F-CBB1-406D-AA48-79836858FFBE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0823D26F-CBB1-406D-AA48-79836858FFBE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0823D26F-CBB1-406D-AA48-79836858FFBE}.Release|x64.ActiveCfg = Release|Any CPU
+		{0823D26F-CBB1-406D-AA48-79836858FFBE}.Release|x64.Build.0 = Release|Any CPU
+		{0823D26F-CBB1-406D-AA48-79836858FFBE}.Release|x86.ActiveCfg = Release|Any CPU
+		{0823D26F-CBB1-406D-AA48-79836858FFBE}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
