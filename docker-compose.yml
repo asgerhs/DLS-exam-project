@@ -29,7 +29,10 @@ services:
     command: "./wait-for-it.sh mssql:1433 -- dotnet run --no-launch-profile --project DLS.WebApi"
     environment:
       ASPNETCORE_URLS: "http://*:80"
-    network_mode: "host"
+    networks:
+      - lan
+    ports:
+      - 8000:80
     
 
   servicestudent:
