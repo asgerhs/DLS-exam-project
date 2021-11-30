@@ -3,6 +3,9 @@ using Grpc.Net.Client;
 using DLS.Models.DTO;
 using DLS.Models.Managers;
 using DLS.Factory.Protos;
+using System;  
+using System.Net;  
+using System.Net.NetworkInformation;  
 
 namespace DLS.Factory
 {
@@ -36,6 +39,20 @@ namespace DLS.Factory
         {
             using var channel = GrpcChannel.ForAddress("http://servicelecture:80");
             var client = new LectureProto.LectureProtoClient(channel);
+
+            NetworkInterface[] adapters = NetworkInterface.GetAllNetworkInterfaces();
+            foreach (NetworkInterface adapter in adapters)
+            {
+                IPInterfaceProperties properties = adapter.GetIPProperties();
+                Console.WriteLine(adapter.Description);
+                Console.WriteLine("  DNS suffix .............................. : {0}",
+                    properties.DnsSuffix);
+                Console.WriteLine("  DNS enabled ............................. : {0}",
+                    properties.IsDnsEnabled);
+                Console.WriteLine("  Dynamically configured DNS .............. : {0}",
+                    properties.IsDynamicDnsEnabled);
+            }
+            Console.WriteLine();
 
             LectureObj s = await client.AddLectureAsync(ProtoMapper<AddLectureDTO, LectureObj>.Map(lecture));
             

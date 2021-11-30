@@ -1,0 +1,21 @@
+syntax = "proto3";
+
+option csharp_namespace = "DLS.Factory.Protos";
+
+package network;
+
+import "google/protobuf/wrappers.proto";
+import "google/protobuf/empty.proto";
+
+service NetworkProto {
+  rpc CheckNetwork (google.protobuf.Empty) returns (NetworkReply);
+}
+
+message NetworkRequest {
+  string networkId = 1;
+  string networkName = 2;
+}
+
+message NetworkReply {
+  bool authorized = 1;
+}
