@@ -21,6 +21,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DLS.ServiceLecture", "DLS.S
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DLS.ServiceNetwork", "DLS.ServiceNetwork\DLS.ServiceNetwork.csproj", "{0823D26F-CBB1-406D-AA48-79836858FFBE}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DLS.ServiceStatistics", "DLS.ServiceStatistics\DLS.ServiceStatistics.csproj", "{7438FAF4-2226-48E3-8650-B152267B8E38}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -78,5 +80,17 @@ Global
 		{0823D26F-CBB1-406D-AA48-79836858FFBE}.Release|x64.Build.0 = Release|Any CPU
 		{0823D26F-CBB1-406D-AA48-79836858FFBE}.Release|x86.ActiveCfg = Release|Any CPU
 		{0823D26F-CBB1-406D-AA48-79836858FFBE}.Release|x86.Build.0 = Release|Any CPU
+		{7438FAF4-2226-48E3-8650-B152267B8E38}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7438FAF4-2226-48E3-8650-B152267B8E38}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7438FAF4-2226-48E3-8650-B152267B8E38}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{7438FAF4-2226-48E3-8650-B152267B8E38}.Debug|x64.Build.0 = Debug|Any CPU
+		{7438FAF4-2226-48E3-8650-B152267B8E38}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{7438FAF4-2226-48E3-8650-B152267B8E38}.Debug|x86.Build.0 = Debug|Any CPU
+		{7438FAF4-2226-48E3-8650-B152267B8E38}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7438FAF4-2226-48E3-8650-B152267B8E38}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7438FAF4-2226-48E3-8650-B152267B8E38}.Release|x64.ActiveCfg = Release|Any CPU
+		{7438FAF4-2226-48E3-8650-B152267B8E38}.Release|x64.Build.0 = Release|Any CPU
+		{7438FAF4-2226-48E3-8650-B152267B8E38}.Release|x86.ActiveCfg = Release|Any CPU
+		{7438FAF4-2226-48E3-8650-B152267B8E38}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

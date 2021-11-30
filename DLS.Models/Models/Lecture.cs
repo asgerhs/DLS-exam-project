@@ -7,6 +7,7 @@ namespace DLS.Models.Models
         public Course Course { get; set; }
         public string RegistrationCode { get; set; }
         public Teacher Teacher { get; set; }
-        List<Student> Students { get; set; }
+        public List<Student> Students { get; set; }
+        public DateTime date { get; set; }
     }
 }

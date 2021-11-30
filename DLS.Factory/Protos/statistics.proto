@@ -1,0 +1,39 @@
+syntax = "proto3";
+
+option csharp_namespace = "DLS.Factory.Protos";
+
+package statistics;
+
+import "google/protobuf/wrappers.proto";
+import "google/protobuf/empty.proto";
+
+service StatisticsProto {
+  rpc GetLongStats (google.protobuf.Empty) returns (Int64Reply);
+  rpc GetDoubleStats (google.protobuf.Empty) returns (DoubleReply);
+  rpc AllStudentsAttendedLecture (google.protobuf.Int64Value) returns (LectureStatObj);
+  rpc AllStudentsNotAttendedLecture (google.protobuf.Int64Value) returns (LectureStatObj);
+  rpc AvgStudentAttendanceCourse (google.protobuf.Int64Value) returns (CourseStatObj);
+  rpc AvgStudentAttendanceAll (google.protobuf.Empty) returns (AllLecturesStatReply);
+}
+
+message Int64Reply {
+    int64 num = 1;
+}
+
+message DoubleReply {
+    double num = 1;
+}
+
+message LectureStatObj {
+  int64 lectureId = 1;
+  repeated int64 studentIds = 2;
+}
+
+message CourseStatObj {
+  int64 courseId = 1;
+  repeated int64 lectureIds = 2;
+}
+
+message AllLecturesStatReply {
+  repeated LectureStatObj lectureIds = 1;
+}

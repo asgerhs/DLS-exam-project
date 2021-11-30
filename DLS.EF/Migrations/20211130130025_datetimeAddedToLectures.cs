@@ -1,10 +1,11 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
 namespace DLS.EF.Migrations
 {
-    public partial class InitialCreate : Migration
+    public partial class datetimeAddedToLectures : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -91,7 +92,7 @@ namespace DLS.EF.Migrations
                     CourseId = table.Column<long>(type: "bigint", nullable: true),
                     RegistrationCode = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     TeacherId = table.Column<long>(type: "bigint", nullable: true),
-                    StudentId = table.Column<long>(type: "bigint", nullable: true)
+                    date = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -102,15 +103,34 @@ namespace DLS.EF.Migrations
                         principalTable: "Courses",
                         principalColumn: "Id");
                     table.ForeignKey(
-                        name: "FK_Lectures_Students_StudentId",
-                        column: x => x.StudentId,
-                        principalTable: "Students",
-                        principalColumn: "Id");
-                    table.ForeignKey(
                         name: "FK_Lectures_Teachers_TeacherId",
                         column: x => x.TeacherId,
                         principalTable: "Teachers",
                         principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "LectureStudent",
+                columns: table => new
+                {
+                    LecturesId = table.Column<long>(type: "bigint", nullable: false),
+                    StudentsId = table.Column<long>(type: "bigint", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_LectureStudent", x => new { x.LecturesId, x.StudentsId });
+                    table.ForeignKey(
+                        name: "FK_LectureStudent_Lectures_LecturesId",
+                        column: x => x.LecturesId,
+                        principalTable: "Lectures",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_LectureStudent_Students_StudentsId",
+                        column: x => x.StudentsId,
+                        principalTable: "Students",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
@@ -129,14 +149,14 @@ namespace DLS.EF.Migrations
                 column: "CourseId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Lectures_StudentId",
-                table: "Lectures",
-                column: "StudentId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Lectures_TeacherId",
                 table: "Lectures",
                 column: "TeacherId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_LectureStudent_StudentsId",
+                table: "LectureStudent",
+                column: "StudentsId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -145,13 +165,16 @@ namespace DLS.EF.Migrations
                 name: "CourseStudent");
 
             migrationBuilder.DropTable(
+                name: "LectureStudent");
+
+            migrationBuilder.DropTable(
                 name: "Lectures");
 
             migrationBuilder.DropTable(
-                name: "Courses");
+                name: "Students");
 
             migrationBuilder.DropTable(
-                name: "Students");
+                name: "Courses");
 
             migrationBuilder.DropTable(
                 name: "Teachers");
