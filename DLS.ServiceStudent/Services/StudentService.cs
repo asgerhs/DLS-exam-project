@@ -5,6 +5,7 @@ using DLS.Models.Models;
 using DLS.Models.Managers;
 using DLS.Models.DTO;
 using DLS.ServiceStudent.Protos;
+using Microsoft.EntityFrameworkCore;
 
 namespace DLS.ServiceStudent
 {
@@ -20,8 +21,15 @@ namespace DLS.ServiceStudent
         {
             using (var dbContext = new SchoolContext())
             {
-                Student s = dbContext.Students.Where(x => x.Id == id.Value).SingleOrDefault();
-                return Task.FromResult(ProtoMapper<Student, StudentObj>.Map(s));
+                Student s = dbContext.Students.Where(x => x.Id == id.Value)
+                .Include(x => x.Courses)
+                .SingleOrDefault();
+
+                StudentObj sobj = ProtoMapper<Student, StudentObj>.Map(s);
+                if (s.Courses != null)
+                    s.Courses.ForEach(course => sobj.CoursesIds.Add(course.Id));
+
+                return Task.FromResult(sobj);
             }
         }
         public override Task<AllStudentsReply> GetAllStudents(Empty empty, ServerCallContext context)
@@ -29,7 +37,7 @@ namespace DLS.ServiceStudent
             using (var dbContext = new SchoolContext())
             {
                 List<Student> students = dbContext.Students.ToList();
-                AllStudentsReply reply = new AllStudentsReply{};
+                AllStudentsReply reply = new AllStudentsReply { };
                 students.ForEach(s => reply.Students.Add(
                     ProtoMapper<Student, StudentObj>.Map(s)));
                 return Task.FromResult(reply);
@@ -40,9 +48,14 @@ namespace DLS.ServiceStudent
             using (var dbContext = new SchoolContext())
             {
                 Student s = ProtoMapper<StudentObj, Student>.Map(student);
+
                 dbContext.Students.Add(s);
                 dbContext.SaveChanges();
-                return Task.FromResult(ProtoMapper<Student, StudentObj>.Map(s));
+
+                StudentObj sobj = ProtoMapper<Student, StudentObj>.Map(s);
+                s.Courses.ForEach(course => sobj.CoursesIds.Add(course.Id));
+
+                return Task.FromResult(sobj);
             }
         }
     }

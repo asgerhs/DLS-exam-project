@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DLS.EF.Migrations
 {
     [DbContext(typeof(SchoolContext))]
-    [Migration("20211127160649_InitialCreate")]
+    [Migration("20211129155128_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

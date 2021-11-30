@@ -21,8 +21,18 @@ namespace DLS.ServiceCourse
         {
             using (var dbContext = new SchoolContext())
             {
-                Course? s = dbContext.Courses.Where(x => x.Id == id.Value).SingleOrDefault();
-                return Task.FromResult(ProtoMapper<Course?, CourseObj>.Map(s));
+                Course? s = dbContext.Courses.Where(x => x.Id == id.Value)
+                    .Include(x => x.Students)
+                    .Include(x => x.Teacher)
+                    .SingleOrDefault();
+                CourseObj cobj = ProtoMapper<Course?, CourseObj>.Map(s);
+                foreach (var student in s.Students)
+                {
+                    cobj.StudentIds.Add(student.Id);
+                }
+                cobj.TeacherId = s.Teacher.Id;
+
+                return Task.FromResult(cobj);
             }
         }
         public override Task<AllCoursesReply> GetAllCourses(Empty empty, ServerCallContext context)
@@ -30,7 +40,7 @@ namespace DLS.ServiceCourse
             using (var dbContext = new SchoolContext())
             {
                 List<Course> courses = dbContext.Courses.ToList();
-                AllCoursesReply reply = new AllCoursesReply{};
+                AllCoursesReply reply = new AllCoursesReply { };
                 courses.ForEach(s => reply.Courses.Add(
                     ProtoMapper<Course, CourseObj>.Map(s)));
                 return Task.FromResult(reply);
@@ -38,24 +48,74 @@ namespace DLS.ServiceCourse
         }
         public override Task<CourseObj> AddCourse(CourseObj course, ServerCallContext context)
         {
+            List<Student> students = new List<Student>();
+            Course c;
+            CourseObj cobj;
+
             using (var dbContext = new SchoolContext())
             {
-                Course s = ProtoMapper<CourseObj, Course>.Map(course);
-                List<Student> students = new List<Student>();
+                c = ProtoMapper<CourseObj, Course>.Map(course);
                 foreach (long id in course.StudentIds)
                 {
                     Student? student = dbContext.Students.Where(x => x.Id == id).SingleOrDefault();
-                    Console.WriteLine(student);
-                    if(student != null)
-                    students.Add(student);
+                    Console.WriteLine("This is " + student.Name + " With ID: " + student.Id);
+                    if (student != null)
+                        students.Add(student);
                 }
-                Console.WriteLine(students);
-                s.Teacher = dbContext.Teachers.Where(x => x.Id == course.TeacherId).SingleOrDefault();
-                s.Students = students; 
-                dbContext.Courses.Add(s);
+                c.Teacher = dbContext.Teachers.Where(x => x.Id == course.TeacherId).SingleOrDefault();
+                c.Students = students;
+                dbContext.Courses.Add(c);
                 dbContext.SaveChanges();
-                return Task.FromResult(ProtoMapper<Course, CourseObj>.Map(s));
+
+                cobj = ProtoMapper<Course, CourseObj>.Map(c);
+                c.Students.ForEach(student => cobj.StudentIds.Add(student.Id));
+                cobj.TeacherId = c.Teacher.Id;
+                
+
             }
+            using (var dbContext = new SchoolContext())
+            {
+                foreach (var student in students)
+                {
+                    student.Courses.Update(student);
+                    if (student.Courses == null)
+                    {
+                        Console.WriteLine("Trying to add student through courses where student.courses is null");
+                        student.Courses = new List<Course>();
+                        student.Courses.Add(dbContext.Courses.Where(x => x.Id == c.Id).SingleOrDefault());
+                    }
+                    else
+                    {
+                        foreach (var item in student.Courses)
+                        {
+                            Console.WriteLine("List from the student: " + item.Id + item.Name);
+                        }
+                        Console.WriteLine("Trying to add student through courses where student.courses is NOT null");
+                        student.Courses.Add(dbContext.Courses.Where(x => x.Id == c.Id).SingleOrDefault());
+                    }
+                }
+                dbContext.SaveChanges();
+            }
+            return Task.FromResult(cobj);
         }
+
+        // public void AddStudentsToCourse(List<long> studentIds, ServerCallContext context)
+        // {
+        //     using (var dbContext = new SchoolContext())
+        //     {
+        //         foreach (var id in studentIds)
+        //         {
+        //             Student student = dbContext.Students.Where(x => x.Id == id).SingleOrDefault();
+        //             if (student.Courses == null)
+        //             {
+        //                 student.Courses = new List<Course>();
+        //                 student.Courses.Add(c);
+        //             }
+        //             else
+        //                 student.Courses.Add(c);
+        //             dbContext.SaveChanges();
+        //         }
+        //     }
+        // }
     }
 }
