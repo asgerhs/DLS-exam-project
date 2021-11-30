@@ -1,3 +1,4 @@
+using System;
 using Google.Protobuf.WellKnownTypes;
 using Grpc.Core;
 using DLS.EF.DatabaseContexts;
@@ -26,8 +27,7 @@ namespace DLS.ServiceStudent
                 .SingleOrDefault();
 
                 StudentObj sobj = ProtoMapper<Student, StudentObj>.Map(s);
-                if (s.Courses != null)
-                    s.Courses.ForEach(course => sobj.CoursesIds.Add(course.Id));
+                s.Courses.ForEach(course => sobj.CourseIds.Add(course.Id));
 
                 return Task.FromResult(sobj);
             }
@@ -53,7 +53,7 @@ namespace DLS.ServiceStudent
                 dbContext.SaveChanges();
 
                 StudentObj sobj = ProtoMapper<Student, StudentObj>.Map(s);
-                s.Courses.ForEach(course => sobj.CoursesIds.Add(course.Id));
+                s.Courses.ForEach(course => sobj.CourseIds.Add(course.Id));
 
                 return Task.FromResult(sobj);
             }

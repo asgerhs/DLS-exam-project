@@ -23,6 +23,6 @@ message StudentObj {
   string email = 3;
   int32 age = 4;
   string gender = 5;
-  repeated int64 coursesIds = 6;
+  repeated int64 courseIds = 6;
   repeated int64 lectureIds = 7;
 }

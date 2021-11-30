@@ -1,3 +1,4 @@
+using System;
 using DLS.ServiceCourse.Protos;
 using Google.Protobuf.WellKnownTypes;
 using Microsoft.EntityFrameworkCore;
@@ -48,17 +49,13 @@ namespace DLS.ServiceCourse
         }
         public override Task<CourseObj> AddCourse(CourseObj course, ServerCallContext context)
         {
-            List<Student> students = new List<Student>();
-            Course c;
-            CourseObj cobj;
-
             using (var dbContext = new SchoolContext())
             {
-                c = ProtoMapper<CourseObj, Course>.Map(course);
+                List<Student> students = new List<Student>();
+                Course c = ProtoMapper<CourseObj, Course>.Map(course);
                 foreach (long id in course.StudentIds)
                 {
                     Student? student = dbContext.Students.Where(x => x.Id == id).SingleOrDefault();
-                    Console.WriteLine("This is " + student.Name + " With ID: " + student.Id);
                     if (student != null)
                         students.Add(student);
                 }
@@ -66,56 +63,14 @@ namespace DLS.ServiceCourse
                 c.Students = students;
                 dbContext.Courses.Add(c);
                 dbContext.SaveChanges();
-
-                cobj = ProtoMapper<Course, CourseObj>.Map(c);
+                CourseObj cobj = ProtoMapper<Course, CourseObj>.Map(c);
                 c.Students.ForEach(student => cobj.StudentIds.Add(student.Id));
                 cobj.TeacherId = c.Teacher.Id;
-                
+
+                return Task.FromResult(cobj);
 
             }
-            using (var dbContext = new SchoolContext())
-            {
-                foreach (var student in students)
-                {
-                    student.Courses.Update(student);
-                    if (student.Courses == null)
-                    {
-                        Console.WriteLine("Trying to add student through courses where student.courses is null");
-                        student.Courses = new List<Course>();
-                        student.Courses.Add(dbContext.Courses.Where(x => x.Id == c.Id).SingleOrDefault());
-                    }
-                    else
-                    {
-                        foreach (var item in student.Courses)
-                        {
-                            Console.WriteLine("List from the student: " + item.Id + item.Name);
-                        }
-                        Console.WriteLine("Trying to add student through courses where student.courses is NOT null");
-                        student.Courses.Add(dbContext.Courses.Where(x => x.Id == c.Id).SingleOrDefault());
-                    }
-                }
-                dbContext.SaveChanges();
-            }
-            return Task.FromResult(cobj);
+
         }
-
-        // public void AddStudentsToCourse(List<long> studentIds, ServerCallContext context)
-        // {
-        //     using (var dbContext = new SchoolContext())
-        //     {
-        //         foreach (var id in studentIds)
-        //         {
-        //             Student student = dbContext.Students.Where(x => x.Id == id).SingleOrDefault();
-        //             if (student.Courses == null)
-        //             {
-        //                 student.Courses = new List<Course>();
-        //                 student.Courses.Add(c);
-        //             }
-        //             else
-        //                 student.Courses.Add(c);
-        //             dbContext.SaveChanges();
-        //         }
-        //     }
-        // }
     }
 }
