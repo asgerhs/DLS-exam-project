@@ -9,13 +9,22 @@ namespace DLS.Factory
         public static async Task<CourseDTO> getCourseById(long id)
         {
             CourseDTO dto = await CourseClient.GetCourseByIdAsync(id);
-            List<StudentDTO> students = new List<StudentDTO>();
-            foreach (var sid in dto.StudentIds)
+
+            if (dto.StudentIds != null || dto.StudentIds.Count > 0)
             {
-                students.Add(await StudentClient.GetStudentByIdAsync(sid));
+                List<StudentDTO> students = new List<StudentDTO>();
+                // Test Når muligt igen.
+                // dto.StudentIds.ForEach(sid => students.Add(await StudentClient.GetStudentByIdAsync(sid)));
+                foreach (var sid in dto.StudentIds)
+                {
+                    students.Add(await StudentClient.GetStudentByIdAsync(sid));
+                }
+                dto.Students = students;
             }
-            dto.Students = students;
-            dto.Teacher = await TeacherClient.GetTeacherByIdAsync(Convert.ToInt64(dto.TeacherId));
+
+            if (dto.TeacherId != null)
+                dto.Teacher = await TeacherClient.GetTeacherByIdAsync(Convert.ToInt64(dto.TeacherId));
+
             return dto;
         }
 
@@ -28,12 +37,15 @@ namespace DLS.Factory
         {
             CourseDTO dto = await CourseClient.AddCourseAsync(course);
 
-            List<StudentDTO> students = new List<StudentDTO>();
-            foreach (var sid in dto.StudentIds)
+            if (dto.StudentIds.Count > 0 || dto.StudentIds != null)
             {
-                students.Add(await StudentClient.GetStudentByIdAsync(sid));
+                List<StudentDTO> students = new List<StudentDTO>();
+                foreach (var sid in dto.StudentIds)
+                {
+                    students.Add(await StudentClient.GetStudentByIdAsync(sid));
+                }
+                dto.Students = students;
             }
-            dto.Students = students;
 
             if (dto.TeacherId != null)
                 dto.Teacher = await TeacherClient.GetTeacherByIdAsync(Convert.ToInt64(dto.TeacherId));

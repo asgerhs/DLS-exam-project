@@ -24,10 +24,12 @@ namespace DLS.ServiceStudent
             {
                 Student s = dbContext.Students.Where(x => x.Id == id.Value)
                 .Include(x => x.Courses)
+                .Include(x => x.Lectures)
                 .SingleOrDefault();
 
                 StudentObj sobj = ProtoMapper<Student, StudentObj>.Map(s);
                 s.Courses.ForEach(course => sobj.CourseIds.Add(course.Id));
+                s.Lectures.ForEach(lecture => sobj.LectureIds.Add(lecture.Id));
 
                 return Task.FromResult(sobj);
             }

@@ -4,7 +4,6 @@ option csharp_namespace = "DLS.Factory.Protos";
 
 package network;
 
-import "google/protobuf/wrappers.proto";
 import "google/protobuf/empty.proto";
 
 service NetworkProto {

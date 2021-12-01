@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DLS.EF.Migrations
 {
     [DbContext(typeof(SchoolContext))]
-    [Migration("20211130130025_datetimeAddedToLectures")]
-    partial class datetimeAddedToLectures
+    [Migration("20211201170241_InitialCreate")]
+    partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -71,6 +71,9 @@ namespace DLS.EF.Migrations
                     b.Property<long?>("CourseId")
                         .HasColumnType("bigint");
 
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
@@ -79,9 +82,6 @@ namespace DLS.EF.Migrations
 
                     b.Property<long?>("TeacherId")
                         .HasColumnType("bigint");
-
-                    b.Property<DateTime>("date")
-                        .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 

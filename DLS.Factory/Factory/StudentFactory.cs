@@ -11,6 +11,7 @@ namespace DLS.Factory
         {
             StudentDTO dto = await StudentClient.GetStudentByIdAsync(id);
             List<CourseDTO> courses = new List<CourseDTO>();
+            List<LectureDTO> lectures = new List<LectureDTO>();
             if (dto.CourseIds != null)
             {
                 foreach (var cid in dto.CourseIds)
@@ -22,6 +23,20 @@ namespace DLS.Factory
                     tid.Teacher = await TeacherClient.GetTeacherByIdAsync(Convert.ToInt64(tid.TeacherId));
                 }
                 dto.Courses = courses;
+            }
+            if(dto.LectureIds != null)
+            {
+                foreach (var lid in dto.LectureIds)
+                {
+                    lectures.Add(await LectureClient.GetLectureByIdAsync(lid));
+                }
+                foreach (var item in lectures)
+                {
+                    item.Teacher = await TeacherClient.GetTeacherByIdAsync(Convert.ToInt64(item.TeacherId));
+                    item.Course = await CourseClient.GetCourseByIdAsync(Convert.ToInt64(item.CourseId));
+                }
+                
+                dto.Lectures = lectures;
             }
             return dto;
         }

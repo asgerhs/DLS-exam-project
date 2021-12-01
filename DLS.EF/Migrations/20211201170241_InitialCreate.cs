@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace DLS.EF.Migrations
 {
-    public partial class datetimeAddedToLectures : Migration
+    public partial class InitialCreate : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -89,10 +89,10 @@ namespace DLS.EF.Migrations
                     Id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Date = table.Column<DateTime>(type: "datetime2", nullable: false),
                     CourseId = table.Column<long>(type: "bigint", nullable: true),
                     RegistrationCode = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    TeacherId = table.Column<long>(type: "bigint", nullable: true),
-                    date = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    TeacherId = table.Column<long>(type: "bigint", nullable: true)
                 },
                 constraints: table =>
                 {

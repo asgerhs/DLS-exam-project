@@ -6,6 +6,7 @@ package lecture;
 
 import "google/protobuf/wrappers.proto";
 import "google/protobuf/empty.proto";
+import "google/protobuf/timestamp.proto";
 
 service LectureProto {
     rpc GetAllLectures (google.protobuf.Empty) returns (AllLecturesReply);
@@ -20,9 +21,10 @@ message AllLecturesReply {
 message LectureObj {
   int64 id = 1;
   string name = 2;
-  int64 courseId = 3;
-  string registrationCode = 4;
-  int64 teacherId = 5;
-  repeated int64 studentIds = 6;
+  google.protobuf.Timestamp date = 3;
+  int64 courseId = 4;
+  string registrationCode = 5;
+  int64 teacherId = 6;
+  repeated int64 studentIds = 7;
 }
 

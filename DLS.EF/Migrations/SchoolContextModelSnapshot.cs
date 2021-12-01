@@ -69,6 +69,9 @@ namespace DLS.EF.Migrations
                     b.Property<long?>("CourseId")
                         .HasColumnType("bigint");
 
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
@@ -77,9 +80,6 @@ namespace DLS.EF.Migrations
 
                     b.Property<long?>("TeacherId")
                         .HasColumnType("bigint");
-
-                    b.Property<DateTime>("date")
-                        .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 
