@@ -1,0 +1,25 @@
+syntax = "proto3";
+
+option csharp_namespace = "DLS.ServiceLogin.Protos";
+
+package login;
+
+import "google/protobuf/wrappers.proto";
+import "google/protobuf/empty.proto";
+
+service LoginProto {
+    rpc GetAllLogins (google.protobuf.Empty) returns (AllLoginsReply);
+    rpc GetLoginById (google.protobuf.Int64Value) returns (LoginObj);
+    rpc AddLogin (LoginObj) returns (LoginObj);
+}
+
+message AllLoginsReply {
+    repeated LoginObj logins = 1;
+}
+
+message LoginObj {
+  int64 id = 1;
+  string name = 2;
+  int64 teacherId = 3;
+  repeated int64 studentIds = 4;
+}

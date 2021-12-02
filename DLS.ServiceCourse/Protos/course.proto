@@ -11,7 +11,6 @@ service CourseProto {
     rpc GetAllCourses (google.protobuf.Empty) returns (AllCoursesReply);
     rpc GetCourseById (google.protobuf.Int64Value) returns (CourseObj);
     rpc AddCourse (CourseObj) returns (CourseObj);
-    // rpc AddStudentsToCourse(StudentIds) returns (google.protobuf.Empty);
 }
 
 message AllCoursesReply {
@@ -24,7 +23,3 @@ message CourseObj {
   int64 teacherId = 3;
   repeated int64 studentIds = 4;
 }
-
-// message StudentIds {
-//   repeated int64 studentIds = 1;
-// }
