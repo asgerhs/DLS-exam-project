@@ -12,6 +12,7 @@ service LectureProto {
     rpc GetAllLectures (google.protobuf.Empty) returns (AllLecturesReply);
     rpc GetLectureById (google.protobuf.Int64Value) returns (LectureObj);
     rpc AddLecture (LectureObj) returns (LectureObj);
+    rpc GenerateCodeForLecture(google.protobuf.Int64Value) returns (LectureObj);
 }
 
 message AllLecturesReply {
@@ -27,4 +28,3 @@ message LectureObj {
   int64 teacherId = 6;
   repeated int64 studentIds = 7;
 }
-

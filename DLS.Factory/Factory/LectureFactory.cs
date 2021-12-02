@@ -46,5 +46,11 @@ namespace DLS.Factory
 
             return dto;
         }
+
+        public static async Task<String> GenerateCodeForLecture(long lectureId)
+        {
+            LectureDTO dto = await LectureClient.GenerateCodeForLectureAsync(lectureId);
+            return dto.RegistrationCode;
+        }
     }
 }

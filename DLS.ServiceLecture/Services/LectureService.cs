@@ -23,13 +23,22 @@ namespace DLS.ServiceLecture
         {
             using (var dbContext = new SchoolContext())
             {
+                MapperConfiguration config = new MapperConfiguration(cfg =>
+                {
+                    cfg.CreateMap<DateTime, Timestamp>();
+                    cfg.CreateMap<Timestamp, DateTime>();
+                    cfg.CreateMap<Lecture, LectureObj>();
+                    cfg.CreateMap<LectureObj, Lecture>();
+                });
+                IMapper iMapper = config.CreateMapper();
+
                 Lecture? l = dbContext.Lectures.Where(x => x.Id == id.Value)
                 .Include(x => x.Course)
                 .Include(x => x.Teacher)
-                .Include(x => x.Students)                
+                .Include(x => x.Students)
                 .SingleOrDefault();
 
-                LectureObj lobj = ProtoMapper<Lecture?, LectureObj>.Map(l);
+                LectureObj lobj = iMapper.Map<Lecture?, LectureObj>(l);
                 lobj.CourseId = l.Course.Id;
                 lobj.TeacherId = l.Teacher.Id;
                 l.Students.ForEach(student => lobj.StudentIds.Add(student.Id));
@@ -41,10 +50,19 @@ namespace DLS.ServiceLecture
         {
             using (var dbContext = new SchoolContext())
             {
+                MapperConfiguration config = new MapperConfiguration(cfg =>
+                {
+                    cfg.CreateMap<DateTime, Timestamp>();
+                    cfg.CreateMap<Timestamp, DateTime>();
+                    cfg.CreateMap<Lecture, LectureObj>();
+                    cfg.CreateMap<LectureObj, Lecture>();
+                });
+                IMapper iMapper = config.CreateMapper();
+
                 List<Lecture> lectures = dbContext.Lectures.ToList();
                 AllLecturesReply reply = new AllLecturesReply { };
                 lectures.ForEach(l => reply.Lectures.Add(
-                    ProtoMapper<Lecture, LectureObj>.Map(l)));
+                    iMapper.Map<Lecture, LectureObj>(l)));
                 return Task.FromResult(reply);
             }
         }
@@ -75,6 +93,33 @@ namespace DLS.ServiceLecture
                 lobj.Date = Timestamp.FromDateTime(l.Date.ToUniversalTime());
                 lobj.CourseId = l.Course.Id;
                 lobj.TeacherId = l.Teacher.Id;
+
+                return Task.FromResult(lobj);
+            }
+        }
+
+        public override Task<LectureObj> GenerateCodeForLecture(Int64Value id, ServerCallContext context)
+        {
+            using (var dbContext = new SchoolContext())
+            {
+                MapperConfiguration config = new MapperConfiguration(cfg =>
+                {
+                    cfg.CreateMap<DateTime, Timestamp>();
+                    cfg.CreateMap<Timestamp, DateTime>();
+                    cfg.CreateMap<Lecture, LectureObj>();
+                    cfg.CreateMap<LectureObj, Lecture>();
+                });
+                IMapper iMapper = config.CreateMapper();
+
+                Lecture? l = dbContext.Lectures.Where(x => x.Id == id.Value).SingleOrDefault();
+                Random random = new Random();
+                string code = id.Value + ":" + random.Next(1, 11) + random.Next(1, 11) + random.Next(1, 11) + random.Next(1, 11);
+                l.RegistrationCode = code;
+
+                dbContext.SaveChanges();
+
+                LectureObj lobj = iMapper.Map<Lecture?, LectureObj>(l);
+                lobj.RegistrationCode = code;
 
                 return Task.FromResult(lobj);
             }
