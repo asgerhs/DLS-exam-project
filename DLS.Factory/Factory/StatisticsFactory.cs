@@ -26,6 +26,18 @@ namespace DLS.Factory
         {
             return await StatisticsClient.AvgStudentAttendanceAll();
         }
+        public static async Task<int> GetAllAttendance(long id)
+        {
+            return await StatisticsClient.GetAllAttendance(id);
+        }
+        public static async Task<int> GetCourseAttendance(long studentId, long courseId)
+        {
+            return await StatisticsClient.GetCourseAttendance(studentId, courseId);
+        }
+        public static async Task<double> GetAvgCourseAttendance(long studentId)
+        {
+            return await StatisticsClient.GetAvgCourseAttendance(studentId);
+        }
 
     }
 }

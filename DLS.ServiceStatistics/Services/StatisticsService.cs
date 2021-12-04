@@ -88,6 +88,64 @@ namespace DLS.ServiceStatistics {
             }
         }
 
+        public override Task<LectureSelfObj> GetAllAttendance(Int64Value studentId, ServerCallContext context)
+        {
+            using(var dbContext = new SchoolContext()) {
+                Student? student = dbContext.Students
+                    .Where(x => x.Id == studentId.Value)
+                    .Include(x => x.Lectures)
+                    .SingleOrDefault();
+                List<long> lectureIds = new List<long>();
+                LectureSelfObj lobj = new LectureSelfObj{};
+                foreach(var lecture in student.Lectures) lobj.LectureId.Add(lecture.Id);
+                return Task.FromResult(lobj);
+            }
+        }
+
+        public override Task<CourseStatObj> GetCourseAttendance(Int64Message msg, ServerCallContext context)
+        {
+            using(var dbContext = new SchoolContext()) {
+                Student? student = dbContext.Students
+                    .Where(x => x.Id == msg.StudentId)
+                    .Include(x => x.Courses.Where(x => x.Id == msg.CourseId))
+                    .Include(x => x.Lectures.Where(x => x.Course.Id == msg.CourseId))
+                    .SingleOrDefault();
+
+                CourseStatObj cobj = new CourseStatObj{CourseId = msg.CourseId};
+                foreach(Lecture lecture in student.Lectures) cobj.LectureIds.Add(lecture.Id);
+                return Task.FromResult(cobj);
+            }
+        }
+
+        public override Task<CourseStatObjs> GetAvgCourseAttendance(Int64Value studentId, ServerCallContext context)
+        {
+            using(var dbContext = new SchoolContext()) {
+                Student? student = dbContext.Students
+                    .Where(x => x.Id == studentId.Value)
+                    .Include(x => x.Courses)
+                    .Include(x => x.Lectures)
+                    .SingleOrDefault();
+
+                CourseStatObjs cobjs = new CourseStatObjs{};
+
+                student.Courses.ForEach(c => {
+                    CourseStatObj cobj = new CourseStatObj{CourseId = c.Id};
+                    foreach(Lecture lecture in student.Lectures.Where(l => l.Course.Id == c.Id))
+                        cobj.LectureIds.Add(lecture.Id);
+                    cobjs.Courses.Add(cobj);
+                });
+
+                // foreach(Course c in student.Courses) {
+                //     CourseStatObj cobj = new CourseStatObj{CourseId = c.Id};
+                //     foreach(Lecture l in student.Lectures) {
+                //         cobj.LectureIds.Add(l.Id);
+                //     }
+                //     cobjs.Courses.Add(cobj);
+                // }
+                
+                return Task.FromResult(cobjs);
+            }
+        }
     }
 
 }

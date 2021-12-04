@@ -39,5 +39,23 @@ namespace DLS.WebApi.Controllers
           return await StatisticsFactory.AvgStudentAttendanceAll();
       }
 
+      [HttpGet("GetAllAttendance/{id}")]
+      public async Task<int> GetAllAttendance(long id)
+      {
+          return await StatisticsFactory.GetAllAttendance(id);
+      }
+
+      [HttpGet("GetCourseAttendance/{studentId}/{courseId}")]
+      public async Task<int> GetCourseAttendance(long studentId, long courseId)
+      {
+          return await StatisticsFactory.GetCourseAttendance(studentId, courseId);
+      }
+
+      [HttpGet("GetAvgCourseAttendance/{studentId}")]
+      public async Task<double> GetAvgCourseAttendance(long studentId)
+      {
+          return await StatisticsFactory.GetAvgCourseAttendance(studentId);
+      }
+
   }
 }
