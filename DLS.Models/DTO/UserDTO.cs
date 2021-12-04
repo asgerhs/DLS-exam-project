@@ -8,12 +8,11 @@ namespace DLS.Models.DTO
     public class UserDTO
     {
         public long Id { get; set; }
-        public string username { get; set; }
-        public string password { get; set; }
 #nullable enable
-        public TeacherDTO? teacher { get; set; }
-        public StudentDTO? student { get; set; }
+        public TeacherDTO? Teacher { get; set; }
+        public StudentDTO? Student { get; set; }
 #nullable disable
-
+        public bool IsTeacher { get; set; }
+        public int SchoolId { get; set; }
     }
 }

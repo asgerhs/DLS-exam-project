@@ -18,6 +18,7 @@
     <Protobuf Include="Protos\lecture.proto" GrpcServices="Client" ProtoRoot="Protos\" />
     <Protobuf Include="Protos\network.proto" GrpcServices="Client" ProtoRoot="Protos\" />
     <Protobuf Include="Protos\statistics.proto" GrpcServices="Client" ProtoRoot="Protos\" />
+    <Protobuf Include="Protos\login.proto" GrpcServices="Client" ProtoRoot="Protos\" />
   </ItemGroup>
 
   <ItemGroup>

@@ -82,3 +82,11 @@ services:
       ASPNETCORE_URLS: "http://*:80"
     networks:
       - lan
+
+  servicelogin:
+    build: ./
+    command: "./wait-for-it.sh mssql:1433 -- dotnet run --no-launch-profile --project DLS.ServiceLogin"
+    environment:
+      ASPNETCORE_URLS: "http://*:80"
+    networks:
+    - lan

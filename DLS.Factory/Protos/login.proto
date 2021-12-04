@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-option csharp_namespace = "DLS.ServiceLogin.Protos";
+option csharp_namespace = "DLS.Factory.Protos";
 
 package login;
 
@@ -27,3 +27,4 @@ message CreateUserObj {
   int32 age = 4;
   string gender = 5;
 }
+

@@ -7,11 +7,18 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Protobuf Include="Protos\greet.proto" GrpcServices="Server" />
+    <Protobuf Include="Protos\login.proto" GrpcServices="Server" />
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Google.Protobuf" Version="3.19.1" />
     <PackageReference Include="Grpc.AspNetCore" Version="2.32.0" />
+    <PackageReference Include="Grpc.Tools" Version="2.42.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\DLS.Models\DLS.Models.csproj" />
+    <ProjectReference Include="..\DLS.EF\DLS.EF.csproj" />
   </ItemGroup>
 
 </Project>

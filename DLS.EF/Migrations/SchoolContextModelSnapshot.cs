@@ -134,6 +134,38 @@ namespace DLS.EF.Migrations
                     b.ToTable("Teachers");
                 });
 
+            modelBuilder.Entity("DLS.Models.Models.User", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"), 1L, 1);
+
+                    b.Property<bool>("IsTeacher")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Password")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<long?>("StudentId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long?>("TeacherId")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("Username")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("StudentId");
+
+                    b.HasIndex("TeacherId");
+
+                    b.ToTable("Users");
+                });
+
             modelBuilder.Entity("LectureStudent", b =>
                 {
                     b.Property<long>("LecturesId")
@@ -184,6 +216,21 @@ namespace DLS.EF.Migrations
                         .HasForeignKey("TeacherId");
 
                     b.Navigation("Course");
+
+                    b.Navigation("Teacher");
+                });
+
+            modelBuilder.Entity("DLS.Models.Models.User", b =>
+                {
+                    b.HasOne("DLS.Models.Models.Student", "Student")
+                        .WithMany()
+                        .HasForeignKey("StudentId");
+
+                    b.HasOne("DLS.Models.Models.Teacher", "Teacher")
+                        .WithMany()
+                        .HasForeignKey("TeacherId");
+
+                    b.Navigation("Student");
 
                     b.Navigation("Teacher");
                 });

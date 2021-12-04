@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace DLS.EF.Migrations
 {
-    public partial class InitialCreate : Migration
+    public partial class initcreate : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -53,6 +53,33 @@ namespace DLS.EF.Migrations
                     table.PrimaryKey("PK_Courses", x => x.Id);
                     table.ForeignKey(
                         name: "FK_Courses_Teachers_TeacherId",
+                        column: x => x.TeacherId,
+                        principalTable: "Teachers",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Users",
+                columns: table => new
+                {
+                    Id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Username = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Password = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    IsTeacher = table.Column<bool>(type: "bit", nullable: false),
+                    TeacherId = table.Column<long>(type: "bigint", nullable: true),
+                    StudentId = table.Column<long>(type: "bigint", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Users", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Users_Students_StudentId",
+                        column: x => x.StudentId,
+                        principalTable: "Students",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Users_Teachers_TeacherId",
                         column: x => x.TeacherId,
                         principalTable: "Teachers",
                         principalColumn: "Id");
@@ -157,6 +184,16 @@ namespace DLS.EF.Migrations
                 name: "IX_LectureStudent_StudentsId",
                 table: "LectureStudent",
                 column: "StudentsId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Users_StudentId",
+                table: "Users",
+                column: "StudentId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Users_TeacherId",
+                table: "Users",
+                column: "TeacherId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -166,6 +203,9 @@ namespace DLS.EF.Migrations
 
             migrationBuilder.DropTable(
                 name: "LectureStudent");
+
+            migrationBuilder.DropTable(
+                name: "Users");
 
             migrationBuilder.DropTable(
                 name: "Lectures");
