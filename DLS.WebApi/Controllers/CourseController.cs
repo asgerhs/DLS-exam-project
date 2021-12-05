@@ -2,9 +2,11 @@ using Microsoft.AspNetCore.Mvc;
 using DLS.Factory;
 using DLS.Models.DTO;
 
+
 namespace DLS.WebApi.Controllers
 {
 
+  
   [ApiController]
   [Route("/courses")]
   public class CourseController : ControllerBase
@@ -15,6 +17,7 @@ namespace DLS.WebApi.Controllers
           _logger = logger;
       }
 
+        // [EnableCors(origins: "*", headers: "*", methods: "*")]
       [HttpGet("get/{id}")]
       public async Task<CourseDTO> GetCourse(long id)
       {
@@ -31,6 +34,7 @@ namespace DLS.WebApi.Controllers
       {
           return await CourseFactory.AddCourse(course);
       }
+
 
   }
 }

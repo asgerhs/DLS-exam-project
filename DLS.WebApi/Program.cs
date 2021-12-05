@@ -4,11 +4,18 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
+builder.Services.AddCors(options => {
+    options.AddPolicy("Policy1", builder => {
+        builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod();
+    });
+});
+
 builder.Services.AddControllers();
 builder.Services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc("v1", new() { Title = "DLS.WebApi", Version = "v1" });
 });
+
 
 var app = builder.Build();
 
@@ -21,7 +28,9 @@ if (app.Environment.IsDevelopment() || app.Environment.IsProduction())
 
 app.UseHttpsRedirection();
 
-app.UseAuthorization();
+app.UseCors("Policy1");
+
+// app.UseAuthorization();
 
 app.MapControllers();
 

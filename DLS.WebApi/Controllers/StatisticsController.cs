@@ -7,6 +7,7 @@ namespace DLS.WebApi.Controllers
 
   [ApiController]
   [Route("/statistics")]
+//   [DisableCors]
   public class StatisticsController : ControllerBase
   {
       private readonly ILogger<StatisticsController> _logger;

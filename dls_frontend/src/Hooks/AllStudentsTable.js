@@ -1,5 +1,5 @@
 
-export const AllStudentsTable = () => {
+export default function AllStudentsTable(){
     return (
         <div>
             

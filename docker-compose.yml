@@ -34,20 +34,20 @@ services:
     ports:
       - 8000:80
 
-  frontend:
-    build: 
-      context: ./dls_frontend
-      dockerfile: ./Dockerfile
-    volumes:
-      - ./src:/app/src
-    environment:
-      ASPNETCORE_URLS: "http://*:80"
-    networks:
-      - lan
-    ports:
-      - 3000:3000
-    depends_on:
-      - webapi
+  # frontend:
+  #   build: 
+  #     context: ./dls_frontend
+  #     dockerfile: ./Dockerfile
+  #   volumes:
+  #     - ./src:/app/src
+  #   environment:
+  #     ASPNETCORE_URLS: "http://*:80"
+  #   networks:
+  #     - lan
+  #   ports:
+  #     - 3000:3000
+  #   depends_on:
+  #     - webapi
     
 
   servicestudent:
