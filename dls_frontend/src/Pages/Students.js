@@ -1,5 +1,6 @@
 import {useState, useEffect} from 'react'
 import Nav from '../Hooks/Nav';
+import { Table, Tag, Space } from 'antd';
 
 function Students() {
     const [data, setData] = useState([]);
@@ -18,10 +19,45 @@ function Students() {
         <div>
             <Nav displayState={"block"}/>
             <h1>Student Page</h1>
-            <AllStudentsTable data={data} />
+            {/* <AllStudentsTable data={data} /> */}
+            <Table dataSource={data} columns={columns}/>
         </div>
     )
 }
+
+const columns = [
+    {
+      title: 'Name',
+      dataIndex: 'name',
+      key: 'name',
+      render: text => <a>{text}</a>,
+    },
+    {
+      title: 'Email',
+      dataIndex: 'email',
+      key: 'email',
+    },
+    {
+      title: 'Age',
+      dataIndex: 'age',
+      key: 'age',
+    },
+    {
+      title: 'Gender',
+      dataIndex: 'gender',
+      key: 'gender',
+    },
+    {
+      title: 'Action',
+      key: 'action',
+      render: (text, record) => (
+        <Space size="middle">
+          <a>Invite {record.name}</a>
+          <a>Delete</a>
+        </Space>
+      ),
+    },
+  ];
 
 function AllStudentsTable({data}) {
     return (
