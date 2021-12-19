@@ -124,5 +124,59 @@ namespace DLS.ServiceLecture
                 return Task.FromResult(lobj);
             }
         }
+
+        public override Task<LectureCode> RegisterToLecture(LectureCode lc, ServerCallContext context)
+        {
+            using (var dbContext = new SchoolContext())
+            {
+                Lecture l;
+                Student s;
+                string[] lectureId = lc.RegistrationCode.Split(":");
+                Console.WriteLine("LectureId: " + lectureId[0]);
+                Console.WriteLine("Email: " + lc.StudentEmail);
+                try
+                {
+                    l = dbContext.Lectures.Where(x => (x.Id == Convert.ToInt64(lectureId[0])) && (x.RegistrationCode == lc.RegistrationCode)).SingleOrDefault();
+                }
+                catch
+                {
+                    lc.Response = "Invalid lecture code";
+                    return Task.FromResult(lc);
+                }
+
+                try
+                {
+                    s = dbContext.Students.Where(x => x.Email == lc.StudentEmail).SingleOrDefault();
+                }
+                catch
+                {
+                    lc.Response = "Invalid student email";
+                    return Task.FromResult(lc);
+                }
+
+                Console.WriteLine("Lecture: " + l);
+                Console.WriteLine("Student: " + s);
+                lc.Response = "Success.";
+                if (l == null)
+                {
+                    lc.Response = "Invalid lecture code";
+                    return Task.FromResult(lc);
+                }
+
+                if (l.Students == null)
+                {
+                    List<Student> students = new List<Student>();
+                    l.Students = students;
+                    l.Students.Add(s);
+                }
+                else
+                    l.Students.Add(s);
+
+                dbContext.SaveChanges();
+
+
+                return Task.FromResult(lc);
+            }
+        }
     }
 }

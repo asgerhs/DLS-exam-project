@@ -13,6 +13,7 @@ service LectureProto {
     rpc GetLectureById (google.protobuf.Int64Value) returns (LectureObj);
     rpc AddLecture (LectureObj) returns (LectureObj);
     rpc GenerateCodeForLecture(google.protobuf.Int64Value) returns (LectureObj);
+    rpc RegisterToLecture(LectureCode) returns (LectureCode);
 }
 
 message AllLecturesReply {
@@ -28,3 +29,9 @@ message LectureObj {
   int64 teacherId = 6;
   repeated int64 studentIds = 7;
 }
+
+message LectureCode {
+  string registrationCode = 1;
+  string response = 2;
+  string studentEmail = 3;
+  }

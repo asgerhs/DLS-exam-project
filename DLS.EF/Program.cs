@@ -14,7 +14,7 @@ namespace DLS.EF
             new Student() { Name = "Andreas", Email = "email", Age = 24, Gender = "Mand", Courses = courses},
             new Student() { Name = "Martin", Email = "email", Age = 30, Gender = "Mand", Courses = courses},
             new Student() { Name = "William", Email = "email", Age = 27, Gender = "Mand", Courses = courses},
-            new Student() { Name = "Asger", Email = "email", Age = 24, Gender = "Mand", Courses = courses}
+            new Student() { Name = "Asger", Email = "asgerhs@hotmail.com", Age = 24, Gender = "Mand", Courses = courses}
         };
 
         static List<Student> studentsSecond = new List<Student>(){

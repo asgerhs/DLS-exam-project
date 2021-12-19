@@ -52,5 +52,10 @@ namespace DLS.Factory
             LectureDTO dto = await LectureClient.GenerateCodeForLectureAsync(lectureId);
             return dto.RegistrationCode;
         }
+
+        public static async Task<String> RegisterToLecture(string lectureCode, string studentEmail)
+        {
+            return await LectureClient.RegisterToLecture(lectureCode, studentEmail);
+        }
     }
 }

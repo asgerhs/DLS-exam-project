@@ -92,5 +92,17 @@ namespace DLS.Factory
             return iMapper.Map<LectureObj, LectureDTO>(reply);
 
         }
+
+        public static async Task<string> RegisterToLecture(string lectureCode, string studentEmail)
+        {
+            using var channel = GrpcChannel.ForAddress("http://servicelecture:80");
+            var client = new LectureProto.LectureProtoClient(channel);
+            LectureCode lc = new LectureCode();
+            lc.RegistrationCode = lectureCode;
+            lc.StudentEmail = studentEmail;
+            LectureCode response = await client.RegisterToLectureAsync(lc);
+
+            return response.Response;
+        }
     }
 }

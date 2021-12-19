@@ -39,5 +39,11 @@ namespace DLS.WebApi.Controllers
             return await LectureFactory.GenerateCodeForLecture(lectureId);
         }
 
+        [HttpPost("registerToLecture/{lectureCode}/{studentEmail}")]
+        public async Task<String> RegisterToLecture(string lectureCode, string studentEmail)
+        {
+            return await LectureFactory.RegisterToLecture(lectureCode, studentEmail);
+        }
+
     }
 }
