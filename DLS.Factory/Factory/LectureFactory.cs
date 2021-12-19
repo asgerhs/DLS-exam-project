@@ -62,7 +62,19 @@ namespace DLS.Factory
 
         public static async Task<String> RegisterToLecture(string lectureCode, string studentEmail)
         {
-            return await LectureClient.RegisterToLecture(lectureCode, studentEmail);
+            return await LectureClient.RegisterToLectureAsync(lectureCode, studentEmail);
+        }
+
+        public static async Task<List<LectureDTO>> GetLecturesByCourse(long courseId)
+        {
+            List<LectureDTO> dto = await LectureClient.GetLecturesByCourseAsync(courseId);
+            foreach (LectureDTO lecture in dto)
+            {
+                if (lecture.CourseId != null)
+                    lecture.Course = await CourseClient.GetCourseByIdAsync(Convert.ToInt64(lecture.CourseId));
+            }
+
+            return dto;
         }
     }
 }

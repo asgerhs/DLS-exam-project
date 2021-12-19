@@ -45,5 +45,11 @@ namespace DLS.WebApi.Controllers
             return await LectureFactory.RegisterToLecture(lectureCode, studentEmail);
         }
 
+        [HttpGet("getLecturesByCourse/{courseId}")]
+        public async Task<List<LectureDTO>> GetLecturesByCourse(long courseId)
+        {
+            return await LectureFactory.GetLecturesByCourse(courseId);
+        }
+
     }
 }

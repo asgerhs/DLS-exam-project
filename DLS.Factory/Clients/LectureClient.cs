@@ -93,7 +93,7 @@ namespace DLS.Factory
 
         }
 
-        public static async Task<string> RegisterToLecture(string lectureCode, string studentEmail)
+        public static async Task<string> RegisterToLectureAsync(string lectureCode, string studentEmail)
         {
             using var channel = GrpcChannel.ForAddress("http://servicelecture:80");
             var client = new LectureProto.LectureProtoClient(channel);
@@ -103,6 +103,30 @@ namespace DLS.Factory
             LectureCode response = await client.RegisterToLectureAsync(lc);
 
             return response.Response;
+        }
+
+        public static async Task<List<LectureDTO>> GetLecturesByCourseAsync(long courseId)
+        {
+            using var channel = GrpcChannel.ForAddress("http://servicelecture:80");
+            var client = new LectureProto.LectureProtoClient(channel);
+
+             MapperConfiguration config = new MapperConfiguration(cfg =>
+                {
+                    cfg.CreateMap<LectureObj, LectureDTO>();
+                    cfg.CreateMap<DateTime, Timestamp>();
+                    cfg.CreateMap<Timestamp, DateTime>();
+                });
+            IMapper iMapper = config.CreateMapper();
+
+            AllLecturesReply reply = await client.GetLecturesByCourseAsync(new Int64Value() { Value = courseId });
+            List<LectureDTO> MappedList = new List<LectureDTO>();
+
+            foreach (var lecture in reply.Lectures)
+            {
+                MappedList.Add(iMapper.Map<LectureObj, LectureDTO>(lecture));
+            }
+
+            return MappedList;
         }
     }
 }

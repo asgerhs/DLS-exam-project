@@ -182,5 +182,33 @@ namespace DLS.ServiceLecture
                 return Task.FromResult(lc);
             }
         }
+
+        public override Task<AllLecturesReply> GetLecturesByCourse(Int64Value courseId, ServerCallContext context)
+        {
+            using (var dbContext = new SchoolContext())
+            {
+                MapperConfiguration config = new MapperConfiguration(cfg =>
+                {
+                    cfg.CreateMap<DateTime, Timestamp>();
+                    cfg.CreateMap<Timestamp, DateTime>();
+                    cfg.CreateMap<Lecture, LectureObj>();
+                    cfg.CreateMap<LectureObj, Lecture>();
+                });
+                IMapper iMapper = config.CreateMapper();
+
+                List<Lecture> lectures = dbContext.Lectures.Where(x => x.Course.Id == courseId.Value)
+                .Include(x => x.Course)
+                .ToList();
+
+                AllLecturesReply reply = new AllLecturesReply { };
+                foreach (var lecture in lectures)
+                {
+                    LectureObj lobj = iMapper.Map<Lecture, LectureObj>(lecture);
+                    lobj.CourseId = lecture.Course.Id;
+                    reply.Lectures.Add(lobj);
+                }
+                return Task.FromResult(reply);
+            }
+        }
     }
 }
