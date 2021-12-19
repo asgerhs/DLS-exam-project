@@ -29,7 +29,14 @@ namespace DLS.Factory
 
         public static async Task<List<LectureDTO>> getLectures()
         {
-            return await LectureClient.GetLecturesAsync();
+            List<LectureDTO> dto = await LectureClient.GetLecturesAsync();
+            foreach (LectureDTO lecture in dto)
+            {
+                if (lecture.CourseId != null)
+                    lecture.Course = await CourseClient.GetCourseByIdAsync(Convert.ToInt64(lecture.CourseId));
+            }
+
+            return dto;
         }
 
         public static async Task<LectureDTO> AddLecture(AddLectureDTO lecture)

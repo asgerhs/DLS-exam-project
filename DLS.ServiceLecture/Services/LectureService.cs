@@ -59,10 +59,14 @@ namespace DLS.ServiceLecture
                 });
                 IMapper iMapper = config.CreateMapper();
 
-                List<Lecture> lectures = dbContext.Lectures.ToList();
+                List<Lecture> lectures = dbContext.Lectures.Include(x => x.Course).ToList();
                 AllLecturesReply reply = new AllLecturesReply { };
-                lectures.ForEach(l => reply.Lectures.Add(
-                    iMapper.Map<Lecture, LectureObj>(l)));
+                foreach (var lecture in lectures)
+                {
+                    LectureObj lobj = iMapper.Map<Lecture, LectureObj>(lecture);
+                    lobj.CourseId = lecture.Course.Id;
+                    reply.Lectures.Add(lobj);
+                }
                 return Task.FromResult(reply);
             }
         }
