@@ -4,13 +4,15 @@ import App from '../App';
 
 
 
-function Nav({someUser, displayState}) {
+function Nav({displayState}) {
     
     const [loggedIn, setLoggedIn] = useState(true);
-    const [show, setShow] = useState(displayState);
+    const [show, setShow] = useState(displayState.display);
+    const [teach, setTeach] = useState(displayState.teacher);
     const [path, setPath] = useState("");
     const [userName, setUserName] = useState("");
 
+    console.log("NAV TEACHER " + displayState.teacher)
     
     const Logout = () => {
         console.log("Logout");
@@ -18,11 +20,6 @@ function Nav({someUser, displayState}) {
         setShow("none");
     }
 
-    
-
-    const navigateTo = useNavigate();
-    
-    
 
     return (
         <div style={{display: displayState}} >
@@ -40,6 +37,9 @@ function Nav({someUser, displayState}) {
                     </Link>
                     <Link to="/statistics">
                         <button type="button">Statistics</button>
+                    </Link>
+                    <Link to="/dailycode">
+                        <button type="button">daily code</button>
                     </Link>
                 </ul>
                 <Link to="/">

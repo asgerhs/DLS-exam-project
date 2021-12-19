@@ -16,7 +16,6 @@ function Teachers() {
     return (
         
         <div>
-            <Nav displayState={"block"}/>
             <h1>Teacher Page</h1>
             <AllTeachersTable data={data} />
         </div>
@@ -26,20 +25,20 @@ function Teachers() {
 function AllTeachersTable({data}) {
     return (
         <table className="table">
-        <thead className="thead-dark">
-        <tr>
-          <th scope="col">Name</th>
-          <th scope="col">Email</th>
-        </tr>
-      </thead>
-      <tbody>
-          {data.map((teacher, index) => (
-              <tr key={index}>
-                  <td>{teacher.name}</td>
-                  <td>{teacher.email}</td>
-              </tr>
-          ))}
-      </tbody>
+            <thead className="thead-dark">
+                <tr>
+                    <th scope="col">Name</th>
+                    <th scope="col">Email</th>
+                </tr>
+            </thead>
+        <tbody>
+        {data.map((teacher, index) => (
+            <tr key={index}>
+                <td>{teacher.name}</td>
+                <td>{teacher.email}</td>
+            </tr>
+        ))}
+        </tbody>
       </table>
     )
 }

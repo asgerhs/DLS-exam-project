@@ -16,7 +16,6 @@ function Statistics() {
     return (
         
         <div>
-            <Nav displayState={"block"}/>
             <h1>Statistics Page</h1>
             
             <StatisticsTable data={data} />

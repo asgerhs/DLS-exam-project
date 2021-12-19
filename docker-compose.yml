@@ -1,5 +1,11 @@
 version: "3.8"
 
+x-shared-limit:
+  &mem_limit
+  mem_limit: 512m
+  mem_reservation: 128M
+  cpus: 0.5
+
 networks:
   lan:
 
@@ -26,6 +32,7 @@ services:
 
   webapi:
     build: ./
+    <<: *mem_limit
     command: "./wait-for-it.sh mssql:1433 -- dotnet run --no-launch-profile --project DLS.WebApi"
     environment:
       ASPNETCORE_URLS: "http://*:80"
@@ -52,6 +59,7 @@ services:
 
   servicestudent:
     build: ./
+    <<: *mem_limit
     command: "./wait-for-it.sh mssql:1433 -- dotnet run --no-launch-profile --project DLS.ServiceStudent"
     environment:
       ASPNETCORE_URLS: "http://*:80"
@@ -60,6 +68,7 @@ services:
 
   serviceteacher:
     build: ./
+    <<: *mem_limit
     command: "./wait-for-it.sh mssql:1433 -- dotnet run --no-launch-profile --project DLS.ServiceTeacher"
     environment:
       ASPNETCORE_URLS: "http://*:80"
@@ -68,6 +77,7 @@ services:
 
   servicecourse:
     build: ./
+    <<: *mem_limit
     command: "./wait-for-it.sh mssql:1433 -- dotnet run --no-launch-profile --project DLS.ServiceCourse"
     environment:
       ASPNETCORE_URLS: "http://*:80"
@@ -76,22 +86,25 @@ services:
 
   servicelecture:
     build: ./
+    <<: *mem_limit
     command: "./wait-for-it.sh mssql:1433 -- dotnet run --no-launch-profile --project DLS.ServiceLecture"
     environment:
       ASPNETCORE_URLS: "http://*:80"
     networks:
       - lan
   
-  servicenetwork:
-    build: ./
-    command: "./wait-for-it.sh mssql:1433 -- dotnet run --no-launch-profile --project DLS.ServiceNetwork"
-    environment:
-      ASPNETCORE_URLS: "http://*:80"
-    networks:
-      - lan
+  # servicenetwork:
+  #   build: ./
+  #   <<: *mem_limit
+  #   command: "./wait-for-it.sh mssql:1433 -- dotnet run --no-launch-profile --project DLS.ServiceNetwork"
+  #   environment:
+  #     ASPNETCORE_URLS: "http://*:80"
+  #   networks:
+  #     - lan
 
   servicestatistics:
     build: ./
+    <<: *mem_limit
     command: "./wait-for-it.sh mssql:1433 -- dotnet run --no-launch-profile --project DLS.ServiceStatistics"
     environment:
       ASPNETCORE_URLS: "http://*:80"
@@ -100,6 +113,7 @@ services:
 
   servicelogin:
     build: ./
+    <<: *mem_limit
     command: "./wait-for-it.sh mssql:1433 -- dotnet run --no-launch-profile --project DLS.ServiceLogin"
     environment:
       ASPNETCORE_URLS: "http://*:80"

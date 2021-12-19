@@ -17,7 +17,6 @@ function Students() {
     return (
         
         <div>
-            <Nav displayState={"block"}/>
             <h1>Student Page</h1>
             {/* <AllStudentsTable data={data} /> */}
             <Table dataSource={data} columns={columns}/>
