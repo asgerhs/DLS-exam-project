@@ -2,23 +2,25 @@ import {useState} from 'react'
 
 function LoginForm({Login, error}) {
     const [details, setDetails] = useState({username: "", password: ""});
-    const [user, setUser] = useState();
+    const [user, setUser] = useState({username: "", isTeacher: false});
+   
 
     const submitHandler = e => {
         e.preventDefault();
-        const requestOptions = {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json'},
-            body: JSON.stringify({ username: details.username, password: details.password })
-        };
-
-        async function wait () {
-            await fetch("http://localhost:8000/user/login", requestOptions)
-                .then(res => setUser({username: res.username, isTeacher: res.isTeacher}))
-        
+        async function fetchUser () {
+            const requestOptions = {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json'},
+                body: JSON.stringify({ username: details.username, password: details.password })
+            };
+            const response = await fetch("http://localhost:8000/user/login", requestOptions)
+            const json = await response.json()
+            json["isTeacher"] 
+            ? setUser({username: json["teacher"]["email"], isTeacher: true})
+            : setUser({username: json["student"]["email"], isTeacher: false})
+            Login(user);
         }
-        wait();
-        Login(user);
+        fetchUser();
     }
 
     const onChange = (evt) => {

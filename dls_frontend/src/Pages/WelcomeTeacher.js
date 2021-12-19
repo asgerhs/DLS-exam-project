@@ -29,7 +29,6 @@ function WelcomeTeacher() {
 
   return (
     <div>
-        <Nav displayState={"block"}/>
         <h2>Welcome teacher, </h2>
         <div>
             {/* {locationOfUser.loaded

@@ -1,4 +1,4 @@
-import {useState} from 'react';
+import {useEffect, useState} from 'react';
 import LoginForm from './Hooks/LoginForm';
 import { UseGeoLocation } from './Hooks/UseGeoLocation';
 import Nav from './Hooks/Nav';
@@ -9,6 +9,7 @@ import Students from './Pages/Students';
 import Courses from './Pages/Courses';
 import Teachers from './Pages/Teachers';
 import Statistics from './Pages/Statistics';
+import DailyCode from './Pages/DailyCode';
 
 
 
@@ -20,10 +21,28 @@ function App() {
 
   }
 
-  const [user, setUser] = useState({name: "", username: "", location: "", role: ""});
+  const [user, setUser] = useState({username: "",  isTeacher: false});
+  const [isTeacher, setIsTeacher] = useState(false);
   const [loggedIn, setLoggedIn] = useState(false);
-  const [disp, setDisplay] = useState("none");
+  const [disp, setDisplay] = useState({display: "none", teacher: false});
   const [error, setError] = useState("");
+
+  useEffect(() => {
+    console.log("WHAT"+user.username)
+    if (user.username !== ""){
+    console.log("THE FUCK"+user.username)
+      if (user.isTeacher) {
+        console.log("Am I a teacher? " + user.isTeacher)
+        setIsTeacher(user.isTeacher);
+        setDisplay({display:"block", teacher: user.isTeacher});
+        navigate("/welcometeacher");
+      } else {
+        setIsTeacher(user.isTeacher);
+        setDisplay({display:"block", teacher: false});
+        navigate("/welcomestudent")
+      }
+    }
+  }, [user])
 
   // const locationOfUser = UseGeoLocation();
   // const locationOfSchool = {latitude: "55.77068804647255", longitude: "12.511908027327893"};
@@ -34,7 +53,7 @@ function App() {
   
 
   const Login = details => {
-    console.log(details);
+    console.log(details.isTeacher);
 
     if (details !== null) {
       console.log("Logged in");
@@ -44,20 +63,19 @@ function App() {
       //   username: details.username,
       //   role: "Teacher"
       // });
-      setDisplay("block")
-      setLoggedIn(true);
-   
+      setUser({username: details.username, isTeacher: details.isTeacher});
       
-      details.isTeacher 
-      ? navigate("/welcometeacher")
-      : navigate("/welcomestudent")
+      // setTimeout(() => {
+      //   setDisplay("block")
+      //   details.isTeacher 
+      //   ? navigate("/welcometeacher")
+      //   : navigate("/welcomestudent")
+      // }, 2000)
 
     } else {
       setError("Details don't match");
       console.log("Details don't match");
     }
-    
-    
 
   }
   
@@ -66,7 +84,7 @@ function App() {
 
   return (
     <div >
-          <Nav displayState={disp}/>
+          <Nav displayState={disp.display} someUser={disp.teacher} />
           <Routes>
             <Route exact path ="/" element={<LoginForm Login={Login} error={error}/>} />
             <Route path="/welcometeacher" element={<WelcomeTeacher />} />
@@ -75,6 +93,7 @@ function App() {
             <Route path="/teachers" element={<Teachers/>} />
             <Route path="/courses" element={<Courses />} />
             <Route path="/statistics" element={<Statistics/>} />
+            <Route path="/dailycode" element={<DailyCode isTeacher={isTeacher}/>} />
           </Routes>
     </div>
   );
