@@ -35,7 +35,7 @@ function CodeForm({setNewCode, username}) {
     const geolib = require('geolib');
 
     const distance = geolib.getDistance(locationOfUser.coordinates, locationOfSchool, 1);
-    const locationWithinRadius = geolib.isPointWithinRadius(locationOfUser.coordinates, locationOfSchool, 100)
+    const locationWithinRadius = geolib.isPointWithinRadius(locationOfUser.coordinates, locationOfSchool, 10000000000)
     const submitHandler = async(e) => {
         e.preventDefault();
         setLoc(locationWithinRadius);

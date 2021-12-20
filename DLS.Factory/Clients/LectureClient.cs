@@ -101,7 +101,6 @@ namespace DLS.Factory
             lc.RegistrationCode = lectureCode;
             lc.StudentEmail = studentEmail;
             LectureCode response = await client.RegisterToLectureAsync(lc);
-
             return response.Response;
         }
 
@@ -120,13 +119,19 @@ namespace DLS.Factory
 
             AllLecturesReply reply = await client.GetLecturesByCourseAsync(new Int64Value() { Value = courseId });
             List<LectureDTO> MappedList = new List<LectureDTO>();
-
             foreach (var lecture in reply.Lectures)
             {
                 MappedList.Add(iMapper.Map<LectureObj, LectureDTO>(lecture));
             }
 
             return MappedList;
+        }
+
+        public static void TimeOutLecture(string registrationCode){
+            using var channel = GrpcChannel.ForAddress("http://servicelecture:80");
+            var client = new LectureProto.LectureProtoClient(channel);
+            string[] id = registrationCode.Split(":");
+            client.TimeOutLecture(new Int64Value() { Value = Convert.ToInt64(id[0]) });
         }
     }
 }

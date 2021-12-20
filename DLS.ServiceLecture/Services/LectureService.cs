@@ -140,7 +140,7 @@ namespace DLS.ServiceLecture
                 Console.WriteLine("Email: " + lc.StudentEmail);
                 try
                 {
-                    l = dbContext.Lectures.Where(x => (x.Id == Convert.ToInt64(lectureId[0])) && (x.RegistrationCode == lc.RegistrationCode))
+                    l = dbContext.Lectures.Where(x => x.Id == Convert.ToInt64(lectureId[0]))
                     .Include(x => x.Students).SingleOrDefault();
                 }
                 catch
@@ -162,10 +162,14 @@ namespace DLS.ServiceLecture
 
                 Console.WriteLine("Lecture: " + l);
                 Console.WriteLine("Student: " + s);
-                lc.Response = "Success.";
                 if (l == null)
                 {
                     lc.Response = "Invalid lecture code";
+                    return Task.FromResult(lc);
+                }
+                if (l.RegistrationCode == "TIMED_OUT")
+                {
+                    lc.Response = "Registration time period ended.";
                     return Task.FromResult(lc);
                 }
                 if (l.Students != null)
@@ -181,11 +185,6 @@ namespace DLS.ServiceLecture
                         }
                     }
                 }
-                // if (l.Students != null && l.Students.Contains(s))
-                // {
-                //     lc.Response = "Already registered to this lecture.";
-                //     return Task.FromResult(lc);
-                // }
 
                 if (l.Students == null)
                 {
@@ -196,8 +195,8 @@ namespace DLS.ServiceLecture
                 else
                     l.Students.Add(s);
 
+                lc.Response = "Success.";
                 dbContext.SaveChanges();
-
 
                 return Task.FromResult(lc);
             }
@@ -228,6 +227,30 @@ namespace DLS.ServiceLecture
                     reply.Lectures.Add(lobj);
                 }
                 return Task.FromResult(reply);
+            }
+        }
+
+        public override Task<Empty> TimeOutLecture(Int64Value lectureId, ServerCallContext context)
+        {
+            using (var dbContext = new SchoolContext())
+            {
+                MapperConfiguration config = new MapperConfiguration(cfg =>
+                {
+                    cfg.CreateMap<DateTime, Timestamp>();
+                    cfg.CreateMap<Timestamp, DateTime>();
+                    cfg.CreateMap<Lecture, LectureObj>();
+                    cfg.CreateMap<LectureObj, Lecture>();
+                });
+                IMapper iMapper = config.CreateMapper();
+                Console.WriteLine("GOOD NIGHT");
+                System.Threading.Thread.Sleep(30000);
+                Console.WriteLine("GOOD MORNING");
+                Lecture? l = dbContext.Lectures.Where(x => x.Id == lectureId.Value).SingleOrDefault();
+                l.RegistrationCode = "TIMED_OUT";
+                dbContext.SaveChanges();
+                LectureObj lobj = iMapper.Map<Lecture?, LectureObj>(l);
+
+                return Task.FromResult(new Empty());
             }
         }
     }

@@ -76,5 +76,10 @@ namespace DLS.Factory
 
             return dto;
         }
+
+        public static void TimeOutLecture(string registrationCode)
+        {
+            LectureClient.TimeOutLecture(registrationCode);
+        }
     }
 }

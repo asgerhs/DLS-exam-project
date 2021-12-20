@@ -51,5 +51,10 @@ namespace DLS.WebApi.Controllers
             return await LectureFactory.GetLecturesByCourse(courseId);
         }
 
+        [HttpPost("timeout/{registrationCode}")]
+        public void TimeOutLecture(string registrationCode){
+            LectureFactory.TimeOutLecture(registrationCode);
+        }
+
     }
 }

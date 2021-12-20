@@ -28,6 +28,7 @@ function CreateLecture({ setNewCode, username, error }) {
             const resData = await response.text()
             console.log(resData)
             setNewCode(resData)
+            await fetch('http://localhost:8000/lectures/timeout/' + code.code, requestOptions)
         }
 
         fetchCode();
