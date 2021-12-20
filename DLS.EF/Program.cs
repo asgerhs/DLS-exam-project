@@ -67,8 +67,12 @@ namespace DLS.EF
                     context.Lectures.Add(l);
                 foreach (Lecture l in dlsLectures)
                     context.Lectures.Add(l);
-                foreach (User u in users)
-                    context.Users.Add(u);
+                User user = context.Users.Where(x => x.Username == users[0].Username).SingleOrDefault();
+                if (user == null)
+                {
+                    foreach (User u in users)
+                        context.Users.Add(u);
+                }
                 context.SaveChanges();
             }
         }

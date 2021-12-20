@@ -140,7 +140,8 @@ namespace DLS.ServiceLecture
                 Console.WriteLine("Email: " + lc.StudentEmail);
                 try
                 {
-                    l = dbContext.Lectures.Where(x => (x.Id == Convert.ToInt64(lectureId[0])) && (x.RegistrationCode == lc.RegistrationCode)).SingleOrDefault();
+                    l = dbContext.Lectures.Where(x => (x.Id == Convert.ToInt64(lectureId[0])) && (x.RegistrationCode == lc.RegistrationCode))
+                    .Include(x => x.Students).SingleOrDefault();
                 }
                 catch
                 {
@@ -158,6 +159,7 @@ namespace DLS.ServiceLecture
                     return Task.FromResult(lc);
                 }
 
+
                 Console.WriteLine("Lecture: " + l);
                 Console.WriteLine("Student: " + s);
                 lc.Response = "Success.";
@@ -166,6 +168,24 @@ namespace DLS.ServiceLecture
                     lc.Response = "Invalid lecture code";
                     return Task.FromResult(lc);
                 }
+                if (l.Students != null)
+                {
+                    foreach (var student in l.Students)
+                    {
+                        Console.WriteLine("STUDENT ID: " + student.Id);
+                        Console.WriteLine("S ID: " + s.Id);
+                        if (student.Id == s.Id)
+                        {
+                            lc.Response = "Already registered to this lecture.";
+                            return Task.FromResult(lc);
+                        }
+                    }
+                }
+                // if (l.Students != null && l.Students.Contains(s))
+                // {
+                //     lc.Response = "Already registered to this lecture.";
+                //     return Task.FromResult(lc);
+                // }
 
                 if (l.Students == null)
                 {
