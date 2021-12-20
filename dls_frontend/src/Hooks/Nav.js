@@ -20,7 +20,6 @@ function Nav({displayState}) {
         setShow("none");
     }
 
-
     return (
         <div style={{display: displayState}} >
             <nav>
