@@ -2,7 +2,7 @@ import {useState, useEffect} from 'react'
 import Nav from '../Hooks/Nav';
 import { UseGeoLocation } from '../Hooks/UseGeoLocation';
 
-function DailyCode({isTeacher, error}) {
+function DailyCode({isTeacher, username, error}) {
     const [code, setCode] = useState();
     const [allow, setAllow] = useState(false);
     const [data, setData] = useState([]);
@@ -18,14 +18,14 @@ function DailyCode({isTeacher, error}) {
 
     return (
         <div>
-            <h1>Code of the day - {code}</h1>
-            <CodeForm setNewCode={setNewCode} setNewAllow={setNewAllow} />
+            <h1>Response - {code}</h1>
+            <CodeForm setNewCode={setNewCode} username={username} setNewAllow={setNewAllow} />
         </div>
     )
 }
 
 
-function CodeForm({setNewCode}) {
+function CodeForm({setNewCode, username}) {
     const [loc, setLoc] = useState(true);
     const [code, setCode] = useState();
 
@@ -35,23 +35,25 @@ function CodeForm({setNewCode}) {
     const geolib = require('geolib');
 
     const distance = geolib.getDistance(locationOfUser.coordinates, locationOfSchool, 1);
-    const locationWithinRadius = geolib.isPointWithinRadius(locationOfUser.coordinates, locationOfSchool, 100)
-
+    const locationWithinRadius = geolib.isPointWithinRadius(locationOfUser.coordinates, locationOfSchool, 10000000000)
     const submitHandler = async(e) => {
         e.preventDefault();
-
-        async function fetchCode () {
-            const requestOptions = {
-                method: 'POST',
-                headers: { 'Content-Type': 'text/plain'},
-            };
-            const response = await fetch('http://localhost:8000/lectures/addRegistrationCode/1', requestOptions)
-            const resData = await response.text()
-            setNewCode(resData)
-            setLoc(locationWithinRadius);
+        setLoc(locationWithinRadius);
+        if(locationWithinRadius){
+            async function fetchCode () {
+                const requestOptions = {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'text/plain'},
+                };
+                const response = await fetch('http://localhost:8000/lectures/registerToLecture/'+ code.code + '/'+ username.username, requestOptions)
+                const resData = await response.text()
+                console.log(resData)
+                setNewCode(resData)
+                // 
+            }
+            
+            fetchCode();
         }
-        
-        fetchCode();
     }
     
     const onChange = (evt) => {

@@ -1,10 +1,11 @@
+import { Button } from 'antd';
 import {useState} from 'react'
 import { NavLink, Link, Navigate, useNavigate} from 'react-router-dom';
 import App from '../App';
 
 
 
-function Nav({displayState}) {
+function Nav({displayState, user}) {
     
     const [loggedIn, setLoggedIn] = useState(true);
     const [show, setShow] = useState(displayState.display);
@@ -38,8 +39,14 @@ function Nav({displayState}) {
                         <button type="button">Statistics</button>
                     </Link>
                     <Link to="/dailycode">
-                        <button type="button">daily code</button>
+                        <button type="button">Daily Code</button>
                     </Link>
+                    {user.isTeacher ? <Link to="/teacherpanel">
+                        <button type="button">Teacher Panel</button>
+                    </Link> : ""}
+                    {/* <Link to="/teacherpanel">
+                        <button type="button">Teacher Panel</button>
+                    </Link> */}
                 </ul>
                 <Link to="/">
                     <button onClick={Logout}>Logout</button>

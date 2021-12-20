@@ -15,6 +15,7 @@ service LectureProto {
     rpc GenerateCodeForLecture(google.protobuf.Int64Value) returns (LectureObj);
     rpc RegisterToLecture(LectureCode) returns (LectureCode);
     rpc GetLecturesByCourse(google.protobuf.Int64Value) returns (AllLecturesReply);
+    rpc TimeOutLecture(google.protobuf.Int64Value) returns (google.protobuf.Empty);
 }
 
 message AllLecturesReply {
