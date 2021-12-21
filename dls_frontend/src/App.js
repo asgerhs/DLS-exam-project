@@ -95,7 +95,7 @@ function App() {
         <Route path="/teachers" element={<Teachers />} />
         <Route path="/courses" element={<Courses />} />
         <Route path="/statistics" element={<Statistics />} />
-        <Route path="/dailycode" element={<DailyCode isTeacher={isTeacher} username={user} />} />
+        {!user.isTeacher ? <Route path="/dailycode" element={<DailyCode isTeacher={isTeacher} username={user} />} /> : ""}
         {user.isTeacher ? <Route path="/teacherpanel" element={<TeacherPanel />} /> : ""}
       </Routes>
     </div>

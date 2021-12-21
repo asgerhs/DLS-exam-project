@@ -38,15 +38,12 @@ function Nav({displayState, user}) {
                     <Link to="/statistics">
                         <button type="button">Statistics</button>
                     </Link>
-                    <Link to="/dailycode">
+                    {!user.isTeacher ? <Link to="/dailycode">
                         <button type="button">Daily Code</button>
-                    </Link>
+                    </Link> : ""}
                     {user.isTeacher ? <Link to="/teacherpanel">
                         <button type="button">Teacher Panel</button>
                     </Link> : ""}
-                    {/* <Link to="/teacherpanel">
-                        <button type="button">Teacher Panel</button>
-                    </Link> */}
                 </ul>
                 <Link to="/">
                     <button onClick={Logout}>Logout</button>

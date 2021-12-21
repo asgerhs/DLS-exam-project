@@ -35,6 +35,7 @@ namespace DLS.ServiceLogin
                     uobj.SchoolId = u.Teacher.Id;
 
                 return Task.FromResult(uobj);
+
             }
         }
 
@@ -44,7 +45,7 @@ namespace DLS.ServiceLogin
             {
                 Student s = ProtoMapper<CreateUserObj, Student>.Map(user);
                 s.Email = user.Username;
-                User u = new User() { Username = user.Username, Password = user.Password, IsTeacher = false, Student = s};
+                User u = new User() { Username = user.Username, Password = user.Password, IsTeacher = false, Student = s };
                 dbContext.Students.Add(s);
                 dbContext.Users.Add(u);
                 dbContext.SaveChanges();
